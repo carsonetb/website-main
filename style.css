@@ -58,10 +58,11 @@ a {
 }
 
 .rotating {
-    animation: rotate 1s infinite;
+    border-radius: 100%;
+    animation: rotate 6s infinite linear;
  }
  
  @keyframes rotate {
     from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    to { transform: rotate(-360deg); }
  }
