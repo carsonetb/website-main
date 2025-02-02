@@ -59,7 +59,7 @@ a {
 
 .rotating {
     border-radius: 100%;
-    animation: rotate 6s infinite linear;
+    animation: rotate 6.28318530718s infinite linear;
  }
  
  @keyframes rotate {
