@@ -1,5 +1,6 @@
 body {
     background-color: black;
+    font-family: serif;
 }
 p {
     color: white;
@@ -19,6 +20,10 @@ h1, h2 {
 }
 a {
     color: rgb(163, 159, 182)
+}
+a:hover {
+    background: rgb(163, 159, 182);
+    color: black;
 }
 .top-bar {
     position: fixed;
