@@ -2,6 +2,7 @@ body {
     background-color: black;
     font-family: serif;
 }
+
 p {
     color: white;
     margin-left: 2%;
@@ -9,22 +10,27 @@ p {
     margin-top: 6%;
     margin-bottom: 6%;
 }
+
 li {
     color: white;
 }
+
 h1, h2 {
     color: white;
     margin-left: 2%;
     margin-top: 3%;
     margin-bottom: 3%;
 }
+
 a {
     color: rgb(163, 159, 182)
 }
+
 a:hover {
     background: rgb(163, 159, 182);
     color: black;
 }
+
 .top-bar {
     position: fixed;
     width: 100%;
@@ -34,11 +40,13 @@ a:hover {
     background-color: #1a1a1a;
     overflow: hidden;
 }
+
 .top-bar a {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
+
 .bottom-bar {
     width: 100%;
     height: 5%;
@@ -48,6 +56,7 @@ a:hover {
     text-align: center;
     background-color: #16161a;
 }
+
 .background-rect {
     position: fixed;
     margin-left: 27%;
@@ -56,6 +65,7 @@ a:hover {
     background-color: #101015;
     z-index: -1;
 }
+
 .contents {
     height: 1000px;
     margin-left: 30%;
@@ -65,9 +75,49 @@ a:hover {
 .rotating {
     border-radius: 100%;
     animation: rotate 6.28318530718s infinite linear;
- }
- 
- @keyframes rotate {
+}
+
+@keyframes rotate {
     from { transform: rotate(0deg); }
     to { transform: rotate(-360deg); }
- }
+}
+
+.fancy {
+    margin-top: -450px;
+}
+
+.tubetop {
+    top: 420px;
+    width: 30%;
+    height: 30%;
+    position: relative;
+    z-index: 1;
+}
+
+.tubebottom {
+    left: -230px;
+    top: 420px;
+    width: 30%;
+    height: 30%;
+    position: relative;
+    z-index: -1;
+}
+
+.tubetopright {
+    top: 415px;
+    left: 70px;
+    width: 30%;
+    height: 30%;
+    position: relative;
+    z-index: 1;
+    scale: -1;
+}
+.tubebottomright {
+    top: 185px;
+    left: 530px;
+    width: 30%;
+    height: 30%;
+    position: relative;
+    z-index: -1;
+    scale: -1;
+}
