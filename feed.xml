@@ -1,0 +1,16 @@
+<!-- Here's the really silly sindication! -->
+<rss version="2.0">
+    <channel>
+        <title>My blog</title>
+        <link>http://carsonetb.com/</link>
+        <description>Blog posts about things that I make an my process. Expect programming, OpenGL, Godot, Python, and maybe other stuff.</description>
+        <item>
+            <title>Test post</title>
+            <link>http://carsonetb.com/</link>
+            <description>Here's the first test post.</description>
+            <link>http://carsonetb.com/</link>
+            <guid>http://carsonetb.com/</guid>
+            <pubDate>Sat, 02 Jan 2025 9:47 PDT</pubDate>
+        </item>
+    </channel>
+</rss>
