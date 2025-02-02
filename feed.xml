@@ -3,7 +3,7 @@
     <channel>
         <title>My blog</title>
         <link>http://carsonetb.com/</link>
-        <description>Blog posts about things that I make an my process. Expect programming, OpenGL, Godot, Python, and maybe other stuff.</description>
+        <description>Blog posts about things that I make and my process. Expect programming, OpenGL, Godot, Python, and maybe other stuff.</description>
         <item>
             <title>Test post</title>
             <description>Here's the first test post.</description>
