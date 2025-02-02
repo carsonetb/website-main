@@ -56,3 +56,12 @@ a {
     margin-left: 30%;
     margin-right: 30%;
 }
+
+.rotating {
+    animation: rotate 1s infinite;
+ }
+ 
+ @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+ }
