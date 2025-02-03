@@ -18,43 +18,58 @@
     margin-bottom: -450px;
 }
 
-.secondmarquee {
+.marquee {
+    margin-top: -120%;
     position: relative;
-    top: -160px;
+}
+
+.marquee-container {
+    top: 140px;
+    position: relative;
+}
+
+.marquee-container2 {
+    top: 122px;
+    position: relative;
+}
+
+.secondmarquee {
+    margin-top: -1000%;
+    position: relative;
 }
 
 .tubetop {
-    top: 420px;
-    width: 30%;
-    height: 30%;
+    top: 182px;
+    width: 17%;
+    height: 17%;
     position: relative;
     z-index: 1;
 }
 
 .tubebottom {
-    left: -230px;
-    top: 420px;
-    width: 30%;
-    height: 30%;
+    left: -17.2%;
+    top: 182px;
+    width: 28%;
+    height: 28%;
     position: relative;
     z-index: -1;
 }
 
 .tubetopright {
-    top: 415px;
-    left: 70px;
-    width: 30%;
-    height: 30%;
+    top: 182px;
+    right: -37%;
+    width: 17%;
+    height: 17%;
     position: relative;
     z-index: 1;
     scale: -1;
 }
 
 .tubebottomright {
-    top: 185px;
-    left: 530px;
-    width: 30%;
-    height: 30%;
+    top: 182px;
+    right: -8.2%;
+    width: 28.2%;
+    height: 28.2%;
     position: relative;
     z-index: -1;
     scale: -1;
