@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/bottom_anim.css">
     <title>My Website</title>
 </head>
 <body>
     <div class="background-rect"></div>
     <div class="top-bar">
         <a href="">Home</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a href="blog/index.html">Blog</a>
     </div>
     <br>
     <br>
@@ -49,31 +50,44 @@
         <h2 style="margin-bottom: 0">Stuff I haven't done</h2>
         <hr>
         <p style="margin-top: 20px; margin-bottom: 0">
-            I haven't done *real* web development. I don't plan to either.
-            <br>
-            <br>
-            I haven't made a compiler ever, but I want to.
-            <br>
-            <br>
-            Make 100 blog posts.
+            Time for some more bullet points. Hopefully I can fill this up more in the future.
+            <ul>
+                <li>I haven't done *real* web development. I don't plan to either. This website is made without any JS (LOL).</li>
+                <li>I haven't made a compiler ever, but I want to.</li>
+                <li>Make 100 blog posts 🤔.</li>
+            </ul>
         </p>
         <h2 style="margin-bottom: 0">Contact</h2>
         <hr>
         <p style="margin-top: 20px">
             If you really want to contact me that much, you'll have to go on a quest.
+            <br>
             It won't take that long don't worry.
         </p>
         <div class="fancy">
-            <img class="tubetop" src="tubetop.png">
-            <img class="tubebottom" src="tubeback.png">
-            <img class="tubetopright" src="tubetop.png">
-            <img class="tubebottomright" src="tubeback.png">
-            <marquee id="profile" style="border-bottom: var(--stone-950) 1px solid; letter-spacing: -2px; line-height: 0.9em">
-                <img class="rotating" src="profile.png" style="width: 20%; height: 20%">
+            <img class="tubetop" src="assets/tubetop.png">
+            <img class="tubebottom" src="assets/tubeback.png">
+            <img class="tubetopright" src="assets/tubetop.png">
+            <img class="tubebottomright" src="assets/tubeback.png">
+            <marquee id="profile">
+                <img class="rotating" src="assets/profile.png" style="width: 20%; height: 20%">
+            </marquee>
+            <marquee id="profile" class="secondmarquee" scrollamount="3">
+                <img class="rotating2" src="assets/profile.png" style="width: 20%; height: 20%">
+            </marquee>
+            <marquee id="profile" class="secondmarquee" scrollamount="3" style="top: -320px; z-index: 100;">
+                <a href="https://elouan.xyz" style="z-index: 100" title="Elouan's website">
+                    <div style="width: 150px; height: 150px;"></div>
+                </a>
+            </marquee>
+            <marquee id="profile" class="secondmarquee" scrollamount="6" style="top: -475px; z-index: 100;">
+                <a href="https://elouan.xyz" style="z-index: 100" title="Elouan's website">
+                    <div style="width: 150px; height: 150px;"></div>
+                </a>
             </marquee>
         </div>
         <div style="margin-top: 0" class="bottom-bar">
-            <p style="margin: 2%">&copy 2025 Carson Bates</p>
+            <p style="margin: 2%">&copy 2025 Carson Bates. Some people are surprised that the above animation doesn't use JS, others aren't.</p>
         </div>
     </div>
 </body>

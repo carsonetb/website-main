@@ -1,0 +1,62 @@
+.rotating {
+    border-radius: 100%;
+    animation: rotate 6s infinite linear;
+}
+
+.rotating2 {
+    background-color: aqua;
+    border-radius: 100%;
+    animation: rotate 12s infinite linear;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(-360deg); }
+}
+
+.fancy {
+    margin-top: -450px;
+    margin-bottom: -450px;
+}
+
+.secondmarquee {
+    position: relative;
+    top: -160px;
+}
+
+.tubetop {
+    top: 420px;
+    width: 30%;
+    height: 30%;
+    position: relative;
+    z-index: 1;
+}
+
+.tubebottom {
+    left: -230px;
+    top: 420px;
+    width: 30%;
+    height: 30%;
+    position: relative;
+    z-index: -1;
+}
+
+.tubetopright {
+    top: 415px;
+    left: 70px;
+    width: 30%;
+    height: 30%;
+    position: relative;
+    z-index: 1;
+    scale: -1;
+}
+
+.tubebottomright {
+    top: 185px;
+    left: 530px;
+    width: 30%;
+    height: 30%;
+    position: relative;
+    z-index: -1;
+    scale: -1;
+}
