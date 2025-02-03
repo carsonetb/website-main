@@ -4,7 +4,6 @@
 }
 
 .rotating2 {
-    background-color: aqua;
     border-radius: 100%;
     animation: rotate 12s infinite linear;
 }
