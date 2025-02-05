@@ -11,5 +11,12 @@
             <guid>http://carsonetb.com/</guid>
             <pubDate>Sat, 02 Jan 2025 9:47 PDT</pubDate>
         </item>
+        <item>
+            <title>The First Blog Post!</title>
+            <description>Carson's first blog post of all time, the one that probably two people will read!</description>
+            <link>http://carsonetb.com/blog/2-3-25</link>
+            <guid>http://carsonetb.com/blog/2-3-25</guid>
+            <pubDate>Sat, 04 Feb 2025 9:03 PM PDT</pubDate>
+        </item>
     </channel>
 </rss>

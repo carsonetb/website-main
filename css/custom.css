@@ -39,3 +39,7 @@
     margin-right: 30%;
     z-index: 100;
 }
+
+.no-underscore {
+    text-decoration: none;
+}
