@@ -43,3 +43,40 @@
 .no-underscore {
     text-decoration: none;
 }
+
+inline-code {
+    background-color: #2d2d3b;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    font-size: 15px;
+}
+
+code {
+    background-color: #16161d;
+    border-radius: 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+    color: white;
+    white-space: nowrap;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    font-size: 15px;
+    margin-top: -12px;
+    margin-bottom: -12px;
+}
+
+warning-box {
+    background-color: #1f190e;
+    border-radius: 10px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    color: white;
+    font-size: 15px;
+    margin-top: -12px;
+    margin-bottom: -12px
+}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+      content="The start of my 2D OpenGL tutorial series.">
+    <meta name="author" content="Carson Bates">
+    <meta property="og:image" content="https://carsonetb.com/assets/profile-circle.png">
+    <link rel="icon" type="image/png" href="../../assets/profile-circle.png">
+    <link rel="stylesheet" href="../../css/general.css">
+    <link rel="stylesheet" href="../../css/custom.css">
+    <link rel="stylesheet" href="../../css/bottom_anim.css">
+    <title>carsoneopengl1 dot com</title>
+</head>
+<body>
+    <div class="background-rect"></div>
+    <div class="top-bar">
+        <a href="../../">Home</a>
+        <a href="../">Blog</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="bg-rect"></div>
+    <div class="contents">
+        <h1 style="margin-bottom: -20px">2D OpenGL Tutorial, Part 1</h1>
+        <p>
+            First off, you'll see that I failed to be creative with a title for an OpenGL tutorial, but I guess
+            I already failed with the title of the blog itself. Also, I decided I don't really like it. Anyway, 
+            on to the contents of this post.
+            <br>
+            <br>
+            Essentially what I'm going to do with this series is making a simple tutorial on 2D OpenGL graphics.
+            It'll be multi-part, and probably differently pased then most other OpenGL tutorials.
+            It's going to be intended for C++ on Linux, with VSCode. I know, very specific combination but you 
+            don't neccesarily need exactly this setup. If you know how to do C++ debugging with something besides
+            VSCode, then use something else. If you know how to setup OpenGL on Windows, which I for the life of
+            me couldn't figure out then feel free to use Windows. Otherwise, just use WSL.
+            <br>
+            <br>
+            Okay, here's a general outline of the tutorial (subject to change (for sure (like really this is not
+            going to be the final outline))):
+        </p>
+            <ul style="margin-top: -20px; margin-bottom: -20px;">
+                <li>Creating an OpenGL window.</li>
+                <li>Drawing basic shapes.</li>
+                <li>Drawing more interesting and customizable shapes.</li>
+                <li>Images</li>
+                <li>??? !!! Boosting rendering with the power of <i><strong>AI</strong></i> !!! ???</li>
+            </ul>
+        <p>
+            The first thing we need to do is install OpenGL. The first commands we'll run will be to
+            install dependencies:
+        </p>
+        <code>
+            sudo apt-get update<br>
+            sudo apt-get install cmake pkg-config build-essential g++ gdb<br>
+            sudo apt-get install libglew-dev libglfw3-dev libglm-dev<br>
+            sudo apt-get install libao-dev libmpg123-dev
+        </code>
+        <br><br><br>
+        <warning-box><i>
+            NOTE: If you're using WSL, you don't need to install VSCode on Linux, just on Windows. Just make sure you install
+            the WSL extension and it will take you through all the neccesary steps.
+        </i></warning-box>
+        <p>
+            Now head over to <a target="_blank" href="https://code.visualstudio.com/">code.visualstudio.com</a> and
+            download VSCode if you choose to use it. Go through the installation process, and then make a new directory
+            for these tutorials. CD into that directory<br> (<inline-code>cd [directory-path]</inline-code>) and
+            then type <inline-code>code .</inline-code> to open VSCode in the current directory, or alternatively
+            open your editor of choice and then open the directory you created.
+            <br>
+            <br>
+            For VSCode install the C/C++ extension, or whatever you need for C++ dev on your editor. Now, if everything's
+            installed correctly (which it should have because I'm following this tutorial along on a fresh WSL install) then
+            you should have a working C++ editor! You can start by making a <inline-code>main.cpp</inline-code> and putting
+            whatever program you want in there, just to test if everything's working. For example:
+        </p>
+        <code>
+            #<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>iostream</span><span style='color:#77D0F8;'>&gt</span><br><br><span style='color:#B692B9;'>int </span>main<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp std::cout <span style='color:#77D0F8;'>&lt</span><span style='color:#77D0F8;'>&lt</span> <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>Hello World!</span><span style='color:#77D0F8;'>"</span>;<br>&nbsp&nbsp <i><span style='color:#B692B9;'>return </span></i><span style='color: #FF813F'>0</span>;<br>}
+        </code>
+        <p>
+            Now for VSCode, hit the run and debug button in the top right corner and choose <inline-code>g++ build and debug
+            active file</inline-code>. If you're lucky, a <inline-code>.vscode</inline-code> folder should be generated and
+            the file should be built and ran. If you're unlucky, there are plenty of resources online to troubleshoot.
+            <br>
+            <br>
+            Now let's include OpenGL. All you need to do for this is update your headers to look like this:
+        </p>
+        <code>
+            #<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>stdio.h</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>stdlib.h</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>iostream</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>GL/glew.h</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>GLFW/glfw3.h</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>glm/glm.hpp</span><span style='color:#77D0F8;'>&gt</span>
+        </code>
+        <p>
+            And let's also add these namespaces (I'll explain what glm is in a second).
+        </p>
+        <code>
+            <span style='color:#77D0F8;'>using</span><span style='color:#B692B9;'> namespace </span><span style='color:#0FB4B5;'>std<br><span style='color:#77D0F8;'>using</span><span style='color:#B692B9;'> namespace </span><span style='color:#0FB4B5;'>glm</span></span><br>
+        </code>
+        <p>
+            So we've done quite a lot to our file, and you might be wondering, "what are all these things we've included?" Here
+            are each of them:
+        </p>
+        <ul style="margin-top: -20px; margin-bottom: -20px;">
+            <li>GLEW: Essentially allows us to interact with OpenGL.</li>
+            <li>GLFW: Also allows us to interact with OpenGL, more for periferals and context creation.</li>
+            <li>GLM: A math library for OpenGL.</li>
+        </ul>
+        <p>
+            Now we need to make sure these get linked when our program is compiled. If you're not using VSCode you'll have to 
+            figure this out yourself, or just use the command line to compile (you won't get debugging unless you know gcc).
+            <br>
+            <br>
+            Inside <inline-code>.vscode/tasks.json</inline-code> find the <inline-code>args</inline-code> array and add three new
+            items. <inline-code>-lGL</inline-code>, <inline-code>-lglfw</inline-code>, and <inline-code>-lGLFW</inline-code>. So
+            your final array should look something like this (sorry the styling for that snippet looks garbage, I made the converter
+            script only for C++):
+        </p>
+        <code>
+            <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>args</span><span style='color:#77D0F8;'>"</span>: [<br>&nbsp&nbsp <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'><span style='color:#77D0F8;'>-</span>fdiagnostics<span style='color:#77D0F8;'>-</span>color=always</span><span style='color:#77D0F8;'>"</span>,<br>&nbsp&nbsp <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'><span style='color:#77D0F8;'>-</span>g</span><span style='color:#77D0F8;'>"</span>,<br>&nbsp&nbsp <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>${file}</span><span style='color:#77D0F8;'>"</span>,<br>&nbsp&nbsp <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'><span style='color:#77D0F8;'>-</span>o</span><span style='color:#77D0F8;'>"</span>,<br>&nbsp&nbsp <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>${fileDirname}/${fileBasenameNoExtension}</span><span style='color:#77D0F8;'>"</span>,<br>&nbsp&nbsp <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'><span style='color:#77D0F8;'>-</span>lGL</span><span style='color:#77D0F8;'>"</span>,<br>&nbsp&nbsp <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'><span style='color:#77D0F8;'>-</span>lglfw</span><span style='color:#77D0F8;'>"</span>,<br>&nbsp&nbsp <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'><span style='color:#77D0F8;'>-</span>lGLEW</span><span style='color:#77D0F8;'>"</span><br>],
+        </code>
+        <p>
+            Great, now we can finally get to programming OpenGL. First let's create our OpenGL context (this is the first step towards
+            creating a window):
+        </p>
+        <code>
+            <span style='color:#707070;'>//</span><span style='color:#707070;'> Create OpenGL context.</span><br><span style='color:#B692B9;'>if </span><span style='color:#56B3D2;'>(</span>!glfwInit<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span><span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp printf<span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>ERROR: Failed to initialize GLFW window.\n</span><span style='color:#77D0F8;'>"</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp <i><span style='color:#B692B9;'>return </span></i><span style='color:#77D0F8;'>-</span><span style='color: #FF813F'>1</span>;<br>}
+        </code>
+        <p>
+            Now some flags:
+        </p>
+        <code>
+            glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_SAMPLES, <span style='color: #FF813F'>4</span><span style='color:#56B3D2;'>)</span>;<br>glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_CONTEXT_VERSION_MAJOR, <span style='color: #FF813F'>3</span><span style='color:#56B3D2;'>)</span>;<br>glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_CONTEXT_VERSION_MINOR, <span style='color: #FF813F'>3</span><span style='color:#56B3D2;'>)</span>;<br>glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE<span style='color:#56B3D2;'>)</span>;<br>glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE<span style='color:#56B3D2;'>)</span>;
+        </code>
+        <p>
+            Now we can finally create our window. 
+        </p>
+        <code>
+            <span style='color:#707070;'>//</span><span style='color:#707070;'> Make our window!</span><br>GLFWwindow<span style='color:#77D0F8;'>*</span> window = glfwCreateWindow<span style='color:#56B3D2;'>(</span><span style='color: #FF813F'>1000</span>, <span style='color: #FF813F'>800</span>, <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>OpenGL Window!</span><span style='color:#77D0F8;'>"</span>, NULL, NULL<span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>if </span><span style='color:#56B3D2;'>(</span>window <span style='color:#B692B9;'>==</span> NULL<span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp printf<span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>ERROR: Failed to oepn GLFW window.\n</span><span style='color:#77D0F8;'>"</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp glfwTerminate<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp <i><span style='color:#B692B9;'>return </span></i><span style='color:#77D0F8;'>-</span><span style='color: #FF813F'>1</span>;<br>}
+        </code>
+        <p>
+            You'll see there's two parameters that we set to NULL. The first one, <inline-code>monitor</inline-code> is for if we want
+            to open our window on a seperate monitor. The second one, <inline-code>share</inline-code> is for sharing a context with 
+            another window. For example, we might want to have a popup, but have that popup share the same OpenGL context as our main
+            window.
+            <br>
+            <br>
+            Now we're almost done, we just need to initialize GLEW:
+        </p>
+        <code>
+            <span style='color:#707070;'>//</span><span style='color:#707070;'> Initialize GLEW</span><br>glewExperimental = true;<br><span style='color:#B692B9;'>if </span><span style='color:#56B3D2;'>(</span>glewInit<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span> <span style='color:#B692B9;'>!=</span> GLEW_OK<span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp printf<span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>ERROR: Failed to init GLEW.\n</span><span style='color:#77D0F8;'>"</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp glfwTerminate<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp <i><span style='color:#B692B9;'>return </span></i><span style='color:#77D0F8;'>-</span><span style='color: #FF813F'>1</span>;<br>}<br><br><span style='color:#707070;'>//</span><span style='color:#707070;'> Don't worry about this for now.</span><br>glEnable<span style='color:#56B3D2;'>(</span>GL_BLEND<span style='color:#56B3D2;'>)</span>;<br>glBlendFunc<span style='color:#56B3D2;'>(</span>GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA<span style='color:#56B3D2;'>)</span>;
+        </code>
+        <p>
+            Now, if you run the code, you should see a window quickly open and then disapear. This is because our program is stopping
+            and so of course the window closes. Let's create a mainloop.
+        </p>
+        <code>
+            <span style='color:#B692B9;'>do </span>{<br>&nbsp&nbsp glfwSwapBuffers<span style='color:#56B3D2;'>(</span>window<span style='color:#56B3D2;'>)</span>;<br><br>&nbsp&nbsp <span style='color:#707070;'>//</span><span style='color:#707070;'> Gets all the keys pressed (including the X button in the top right!)</span><br>&nbsp&nbsp glfwPollEvents<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br>}<br><span style='color:#B692B9;'>while </span><span style='color:#56B3D2;'>(</span>!glfwWindowShouldClose<span style='color:#56B3D2;'>(</span>window<span style='color:#56B3D2;'>)</span><span style='color:#56B3D2;'>)</span>;<br><br>glfwTerminate<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;
+        </code>
+        <p>
+            Amazing! We've opened a window! Hopefully all of this stuff makes sense to you so far (save for the stuff inside the mainloop,
+            we'll get to that later). 
+            <br>
+            <br>
+            Now, below is the full code that we've written in case you've missed anything:
+        </p>
+        <!-- Generated from a seperate code file for HTML -->
+        <code>
+            #<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>stdio.h</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>stdlib.h</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>iostream</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>GL/glew.h</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>GLFW/glfw3.h</span><span style='color:#77D0F8;'>&gt</span><br>#<span style='color:#B692B9;'>include </span><span style='color:#77D0F8;'>&lt</span><span style='color:#9ECE6A;'>glm/glm.hpp</span><span style='color:#77D0F8;'>&gt</span><br><br><span style='color:#77D0F8;'>using</span><span style='color:#B692B9;'> namespace </span><span style='color:#0FB4B5;'>glm</span>;<br><br><span style='color:#B692B9;'>int </span>main<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp <span style='color:#707070;'>//</span><span style='color:#707070;'> Create OpenGL context.</span><br>&nbsp&nbsp <span style='color:#B692B9;'>if </span><span style='color:#56B3D2;'>(</span>!glfwInit<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span><span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp &nbsp&nbsp printf<span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>ERROR: Failed to initialize GLFW window.\n</span><span style='color:#77D0F8;'>"</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp &nbsp&nbsp <i><span style='color:#B692B9;'>return </span></i><span style='color:#77D0F8;'>-</span><span style='color: #FF813F'>1</span>;<br>&nbsp&nbsp }<br>&nbsp&nbsp <br>&nbsp&nbsp glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_SAMPLES, <span style='color: #FF813F'>4</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_CONTEXT_VERSION_MAJOR, <span style='color: #FF813F'>3</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_CONTEXT_VERSION_MINOR, <span style='color: #FF813F'>3</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE<span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp glfwWindowHint<span style='color:#56B3D2;'>(</span>GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE<span style='color:#56B3D2;'>)</span>;<br><br>&nbsp&nbsp <span style='color:#707070;'>//</span><span style='color:#707070;'> Make our window!</span><br>&nbsp&nbsp GLFWwindow<span style='color:#77D0F8;'>*</span> window = glfwCreateWindow<span style='color:#56B3D2;'>(</span><span style='color: #FF813F'>1000</span>, <span style='color: #FF813F'>800</span>, <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>OpenGL Window!</span><span style='color:#77D0F8;'>"</span>, NULL, NULL<span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp <span style='color:#B692B9;'>if </span><span style='color:#56B3D2;'>(</span>window <span style='color:#B692B9;'>==</span> NULL<span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp &nbsp&nbsp printf<span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>ERROR: Failed to oepn GLFW window.\n</span><span style='color:#77D0F8;'>"</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp &nbsp&nbsp glfwTerminate<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp &nbsp&nbsp <i><span style='color:#B692B9;'>return </span></i><span style='color:#77D0F8;'>-</span><span style='color: #FF813F'>1</span>;<br>&nbsp&nbsp }<br><br>&nbsp&nbsp <span style='color:#707070;'>//</span><span style='color:#707070;'> Makes this the window everything gets drawn to for the current thread.</span><br>&nbsp&nbsp glfwMakeContextCurrent<span style='color:#56B3D2;'>(</span>window<span style='color:#56B3D2;'>)</span>;<br><br>&nbsp&nbsp <span style='color:#707070;'>//</span><span style='color:#707070;'> Initialize GLEW</span><br>&nbsp&nbsp glewExperimental = true;<br>&nbsp&nbsp <span style='color:#B692B9;'>if </span><span style='color:#56B3D2;'>(</span>glewInit<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span> <span style='color:#B692B9;'>!=</span> GLEW_OK<span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp &nbsp&nbsp printf<span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>ERROR: Failed to init GLEW.\n</span><span style='color:#77D0F8;'>"</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp &nbsp&nbsp glfwTerminate<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp &nbsp&nbsp <i><span style='color:#B692B9;'>return </span></i><span style='color:#77D0F8;'>-</span><span style='color: #FF813F'>1</span>;<br>&nbsp&nbsp }<br><br>&nbsp&nbsp <span style='color:#707070;'>//</span><span style='color:#707070;'> Don't worry about this for now.</span><br>&nbsp&nbsp glEnable<span style='color:#56B3D2;'>(</span>GL_BLEND<span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp glBlendFunc<span style='color:#56B3D2;'>(</span>GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA<span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp <br>&nbsp&nbsp <span style='color:#B692B9;'>do </span>{<br>&nbsp&nbsp &nbsp&nbsp glfwSwapBuffers<span style='color:#56B3D2;'>(</span>window<span style='color:#56B3D2;'>)</span>;<br><br>&nbsp&nbsp &nbsp&nbsp <span style='color:#707070;'>//</span><span style='color:#707070;'> Gets all the keys pressed (including the X button in the top right!)</span><br>&nbsp&nbsp &nbsp&nbsp glfwPollEvents<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp }<br>&nbsp&nbsp <span style='color:#B692B9;'>while </span><span style='color:#56B3D2;'>(</span>!glfwWindowShouldClose<span style='color:#56B3D2;'>(</span>window<span style='color:#56B3D2;'>)</span><span style='color:#56B3D2;'>)</span>;<br><br>&nbsp&nbsp glfwTerminate<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br><br>&nbsp&nbsp <i><span style='color:#B692B9;'>return </span></i><span style='color: #FF813F'>0</span>;<br>}
+        </code>
+        <p>
+            I've also decided it would be fun to include a cool link I've found with each blog post (completely unrelated to the post of
+            course). So, for this one I thought I'd link to a video by GeoGuessr player rainbolt: 
+            <a target="_blank" href="https://www.youtube.com/watch?v=pMkN_sJb9Yc">www.youtube.com/video</a>. You'll quickly see what the 
+            game is about. At about 3:45 minutes into the video you'll see how insane it can get. 
+            <br>
+            <br>
+            Anyway, expect a second part coming out in about a week or so from when I've written this. Again, if you've come from Google,
+            please subscribe to my RSS feed lol. <i>carsonetb.com/feed.xml</i>. Then you'll see when the next part of this series comes out.
+            In the meantime ...
+            <br>
+            <br>
+            Happy <i style="color: rgb(182, 182, 182)">February 9th, 2025, 11:43 AM PDT</i>!
+        </p>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="fancy">
+            <img class="tubetop" src="../../assets/tubetop.png">
+            <img class="tubebottom" src="../../assets/tubeback.png">
+            <img class="tubetopright" src="../../assets/tubetop.png">
+            <img class="tubebottomright" src="../../assets/tubeback.png">
+            <div class="marquee-container">
+                <marquee class="marquee">
+                    <img class="rotating" src="../../assets/profile.png" style="width: 20%; height: 20%">
+                </marquee>
+            </div>
+            <div class="marquee-container2">
+                <marquee id="profile" class="secondmarquee" scrollamount="3">
+                    <img class="rotating2" src="../../assets/profile.png" style="width: 20%; height: 20%">
+                </marquee>
+            </div>
+            <marquee id="profile" class="secondmarquee" scrollamount="3" style="top: -320px; z-index: 100;">
+                <a href="https://elouan.xyz" style="z-index: 100" title="Elouan's website">
+                    <div style="width: 150px; height: 150px;"></div>
+                </a>
+            </marquee>
+            <marquee id="profile" class="secondmarquee" scrollamount="6" style="top: -475px; z-index: 100;">
+                <a href="https://elouan.xyz" style="z-index: 100" title="Elouan's website">
+                    <div style="width: 150px; height: 150px;"></div>
+                </a>
+            </marquee>
+        </div>
+        <br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br>
+        <div style="margin-top: 0" class="bottom-bar">
+            <p style="margin: 2%">&copy 2025 Carson Bates. Some people are surprised that the above animation doesn't use JS, others aren't.</p>
+        </div>
+    </div>
+</body>
+</html>
