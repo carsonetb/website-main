@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../css/general.css">
     <link rel="stylesheet" href="../css/custom.css">
     <link rel="stylesheet" href="../css/bottom_anim.css">
+    <link rel="stylesheet" href="photos.css">
     <title>carsonetb dot com</title>
 </head>
 <body>
@@ -32,6 +33,25 @@
             This page isn't ready yet but I'm planning to pool together some of the photos I've taken and put them 
             in here.
         </p>
+
+        <div class="gallery-container">
+            <div class="gallery" id="gallery">
+                <img alt="1.jpg" style="background-color: var(--stone-800);" src="../assets/photos/1.jpg">
+                <img alt="2.jpg" style="background-color: var(--stone-800);" src="../assets/photos/2.jpg">
+                <img alt="3.jpg" style="background-color: var(--stone-800);" src="../assets/photos/3.jpg">
+                <img alt="4.jpg" style="background-color: var(--stone-800);" src="../assets/photos/4.jpg">
+                <img alt="5.jpg" style="background-color: var(--stone-800);" src="../assets/photos/5.jpg">
+                <img alt="6.jpg" style="background-color: var(--stone-800);" src="../assets/photos/6.jpg">
+                <img alt="7.jpg" style="background-color: var(--stone-800);" src="../assets/photos/7.jpg">
+            </div>
+        </div>
+        <div class="fullscreen-overlay" id="fullscreen-overlay" style="display: none;">
+            <div class="fullscreen-content" id="fullscreen-content">
+                <img class="fullscreen-image" id="fullscreen-image" src alt="1.jpg">
+                <p class="image-description" id="image-description"></p>
+            </div>
+        </div>
+
         <hr color="#303030"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <div class="fancy">
             <img class="tubetop" src="../assets/tubetop.png">
@@ -66,5 +86,6 @@
             <p style="margin: 2%">&copy 2025 Carson Bates. Some people are surprised that the above animation doesn't use JS, others aren't.</p>
         </div>
     </div>
+    <script src="../scripts/gallery.js"></script>
 </body>
 </html>
