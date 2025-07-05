@@ -7,24 +7,24 @@
 .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
+    grid-template-rows: repeat(auto-fit, 260px);
+    grid-auto-flow: dense;
+    gap: 15px;
 }
 
 .gallery img {
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
-    cursor: pointer;
     display: block;
     background-color: var(--stone-800);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
     color: transparent; 
     text-indent: -10000px; 
 }
 
 .gallery img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform:scale(1.3);
 }
 
 /* --- FULLSCREEN STYLES --- */

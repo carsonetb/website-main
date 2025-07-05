@@ -1,5 +1,6 @@
 // I did not write this.
 // Credit: https://elouan.xyz/scripts/gallery.js
+// It is slightly modified so I have to do less work.
 
 document.addEventListener('DOMContentLoaded', () => {
     const gallery = document.getElementById('gallery');
@@ -11,8 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const repoOwner = 'carsonetb';
     const repoName = 'carsonetb.github.io';
     const branch = 'main';
-    const repoRootUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/`;
-    const rawBaseUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/`;
+    const folderName = 'assets/photos'
+    const repoRootUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderName}/`;
+    const rawBaseUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${folderName}/`;
 
     let imagesData = []; // Store { src, description, element }
     let currentIndex = -1;
@@ -109,8 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         previewTester.onerror = () => {
-            // Preview doesn't exist or failed to load (e.g., 404)
-            console.log(`Preview not found/failed for ${imageData.fileName}, using full resolution.`);
+            // What the fuck is a preview
             imgElement.src = imageData.fullResUrl; // Use full-res URL as fallback for the grid
             imageData.hasPreview = false;
             imageData.hasTriedPreview = true;
@@ -147,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         } catch (error) {
-            console.warn(`Could not fetch/read EXIF for ${imageData.fileName} from ${imageData.fullResUrl}:`, error);
+            // Cool people don't use EXIF
             imageData.description = ''; // Set empty description on error
             if (currentIndex !== -1 && imagesData[currentIndex] === imageData && fullscreenOverlay.style.display !== 'none') {
                 imageDescription.textContent = ''; // Clear description on error
