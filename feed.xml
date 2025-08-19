@@ -5,6 +5,13 @@
         <link>http://carsonetb.com/</link>
         <description>Blog posts about things that I make and my process. Expect programming, OpenGL, Godot, Python, and maybe other stuff.</description>
         <item>
+            <title>MultiGodot</title>
+            <description>An overview of my work in progress multi-user modification of the Godot Game Engine.</description>
+            <link>https://carsonetb.com/blog/8-19-25</link>
+            <guid>http://carsonetb.com/blog/8-19-25</guid>
+            <pubDate>Tue, 19 Aug 2025 11:06 AM PDT</pubDate>
+        </item>
+        <item>
             <title>2D OpenGL Tutorial, Part 1</title>
             <description>The first of a series about making 2D OpenGL applications.</description>
             <link>https://carsonetb.com/blog/2-5-25</link>

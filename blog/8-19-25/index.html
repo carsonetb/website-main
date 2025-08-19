@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+      content="The start of my 2D OpenGL tutorial series.">
+    <meta name="author" content="Carson Bates">
+    <meta property="og:image" content="https://carsonetb.com/assets/profile-circle.png">
+    <link rel="icon" type="image/png" href="../../assets/profile-circle.png">
+    <link rel="stylesheet" href="../../css/general.css">
+    <link rel="stylesheet" href="../../css/custom.css">
+    <link rel="stylesheet" href="../../css/bottom_anim.css">
+    <title>multietb dot com</title>
+</head>
+<body>
+    <div class="background-rect"></div>
+    <div class="top-bar">
+        <a href="../../">Home</a>
+        <a href="../">Blog</a>
+        <a href="../../photos/">Photography</a>
+        <a target="_blank" href="https://epimetheusgames.github.io">Games</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="bg-rect"></div>
+    <div class="contents">
+        <h1 style="margin-bottom: -20px">MultiGodot</h1>
+        <p style="margin-bottom: 0;">
+            This post is meant to be an overview of a work in progress software that I've 
+            been working on as of late. Personally, I'm very excited by it and I think it 
+            could be a very powerfull tool for small Godot game development teams, once 
+            it's finished. Because I am at the stage of life where I can shamelessly steal
+            resources from my parents, I don't have any inherent need to make money, and 
+            so this tool will always be free and open-sourced under the MIT license.
+            <br>
+            <br>
+            In this post I will go over my future plans for the tool, MultiGodot, and the 
+            progress I've made towards those goals. I'll save a technical breakdown of 
+            everything I've built so far for later, though.
+            <br>
+            <br>
+            If you're interested, here's a 
+            <a target="_blank" href="https://github.com/carsonetb/godot/tree/dev">link</a>
+            to where the repository is located.
+        </p>
+        <h2 style="margin-bottom: -20px;">Future Plans</h2>
+        <p style="margin-bottom: 0;">
+            MultiGodot is peer-to-peer, meaning it requires no server to operate. In my
+            opinion this is a net benefit because: 
+        </p>
+        <ul style="margin-bottom: -20px;">
+            <li>Peer-to-peer is generally faster.</li>
+            <li>I don't have to pay for servers.</li>
+            <li>You don't have to worry about your game going through my servers.</li>
+        </ul>
+        <p style="margin-bottom: 0;">
+            It also starts off a session by sending your entire project over when someone
+            joins. I plan to make lobbies password protected so only let people who are 
+            trusted join them, unless you want someone stealing your entire game.
+            <br>
+            <br>
+            Anyway, on to the planned feature-set of the project. I plan for MultiGodot 
+            to have all of the following in its ideal state:
+        </p>
+        <ul style="margin-bottom: -20px;">
+            <li>Colaborative script editing</li>
+            <li>Colaborative scene editing in both 2D and 3D.</li>
+            <li>Synchronize when files are created or deleted.</li>
+            <li>Multiple people can edit project settings at once.</li>
+            <li>Multiple people can edit resources stored in the filesystem at once.</li>
+            <li>
+                Integration with version control&mdash;before the last user leaves the 
+                lobby they are prompted to push to a remote with a commit message. Then
+                when the first person creates a lobby the lobby is automatically updated 
+                from the remote.
+            </li>
+            <li>Probably more things that I missed here.</li>
+        </ul>
+        <br><br><br>
+        <warning-box><i>
+            NOTE: This is more of a full feature-set, some of the items on this list I
+            have already developed.
+        </i></warning-box>
+        <p style="margin-bottom: 0;">
+            I'm sure it will be a long time until all these features are available, 
+            but I'm trying to build only the essential ones first so I can have a useable
+            prototype out as soon as possible.
+        </p>
+        <h2 style="margin-bottom: -20px;">Current Progress</h2>
+        <p>
+            Currently I've made significant progress on filesystem sync (moving, renaming,
+            adding, and deleting files), and also script editing. Script editing is not 
+            collaborative yet, but you can watch the "owner" of the script edit it in real 
+            time, and you can edit your own script at the same time as someone else is editing 
+            theirs.
+            <br>
+            <br>
+            Currently I'm preparing to dive into collaborative scene editing, which will 
+            probably be the biggest challenge in this project. 
+            <br>
+            <br>
+            Anyway, that was just a brief overview of what I've been up to lately. I'll
+            probably write a more comprehensive post in the future, but until then ...
+            <br>
+            <br>
+            Happy <i style="color: rgb(182, 182, 182)">Tuesday, August 19th, 2025, 11:06 AM PDT!</i>
+        </p>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="fancy">
+            <img class="tubetop" src="../../assets/tubetop.png">
+            <img class="tubebottom" src="../../assets/tubeback.png">
+            <img class="tubetopright" src="../../assets/tubetop.png">
+            <img class="tubebottomright" src="../../assets/tubeback.png">
+            <div class="marquee-container">
+                <marquee class="marquee">
+                    <img class="rotating" src="../../assets/profile.png" style="width: 20%; height: 20%">
+                </marquee>
+            </div>
+            <div class="marquee-container2">
+                <marquee id="profile" class="secondmarquee" scrollamount="3">
+                    <img class="rotating2" src="../../assets/profile.png" style="width: 20%; height: 20%">
+                </marquee>
+            </div>
+            <marquee id="profile" class="secondmarquee" scrollamount="3" style="top: -320px; z-index: 100;">
+                <a href="https://elouan.xyz" style="z-index: 100" title="Elouan's website">
+                    <div style="width: 150px; height: 150px;"></div>
+                </a>
+            </marquee>
+            <marquee id="profile" class="secondmarquee" scrollamount="6" style="top: -475px; z-index: 100;">
+                <a href="https://elouan.xyz" style="z-index: 100" title="Elouan's website">
+                    <div style="width: 150px; height: 150px;"></div>
+                </a>
+            </marquee>
+        </div>
+        <br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br>
+        <div style="margin-top: 0" class="bottom-bar">
+            <p style="margin: 2%">&copy 2025 Carson Bates. Some people are surprised that the above animation doesn't use JS, others aren't.</p>
+        </div>
+    </div>
+</body>
+</html>
