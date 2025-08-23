@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+      content="Advice for writing multiplayer code (with GodotSteam)">
+    <meta name="author" content="Carson Bates">
+    <meta property="og:image" content="https://carsonetb.com/assets/profile-circle.png">
+    <link rel="icon" type="image/png" href="../../assets/profile-circle.png">
+    <link rel="stylesheet" href="../../css/general.css">
+    <link rel="stylesheet" href="../../css/custom.css">
+    <link rel="stylesheet" href="../../css/bottom_anim.css">
+    <title>advice dot multietb dot com</title>
+</head>
+<body>
+    <div class="background-rect"></div>
+    <div class="top-bar">
+        <a href="../../">Home</a>
+        <a href="../">Blog</a>
+        <a href="../../photos/">Photography</a>
+        <a target="_blank" href="https://epimetheusgames.github.io">Games</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="bg-rect"></div>
+    <div class="contents">
+        <h1 style="margin-bottom: -20px">Advice for Writing Multiplayer Code</h1>
+        <p>
+            GodotSteam is a C++ module that can be added to the Godot Engine to enable the 
+            programmer to add universal peer to peer multiplayer functionality to their game 
+            in a (relatively) simple fassion. I also chose to use this for my 
+            <a href="../8-19-25/" target="_blank">MultiGodot</a> project, which is itself a
+            C++ module. 
+            <br>
+            <br>
+            This blog post will use C++ code. It will be less of a tutorial of setting up
+            GodotSteam (for that you can read the 
+            <a href="https://godotsteam.com/" target="_blank">docs</a>), and more of a method
+            to easily communicate between two or more peers through packets.
+        </p>
+        <h2 style="margin-bottom: -20px">Initial Functions</h2>
+        <p>
+            After following the GodotSteam tutorials you should end up with this set of functions:
+        </p>
+        <code>
+            <span style='color:#707070;'>//</span><span style='color:#707070;'> CONSTANTS</span><br><br><i><span style='color:#B692B9;'>static </span></i><i><span style='color:#B692B9;'>const </span></i><span style='color:#B692B9;'>int </span>PACKET_READ_LIMIT = <span style='color: #FF813F'>32</span>;<br><i><span style='color:#B692B9;'>static </span></i><i><span style='color:#B692B9;'>const </span></i><span style='color:#B692B9;'>int </span>MAX_MEMBERS = <span style='color: #FF813F'>4</span>; <span style='color:#707070;'>//</span><span style='color:#707070;'> Possibly increase this in the future <span style='color:#B692B9;'>if </span>there is a need.</span><br><i><span style='color:#B692B9;'>static </span></i><i><span style='color:#B692B9;'>const </span></i><span style='color:#B692B9;'>int </span>DEFAULT_CHANNEL = <span style='color: #FF813F'>0</span>;<br><i><span style='color:#B692B9;'>static </span></i><i><span style='color:#B692B9;'>const </span></i><span style='color:#B692B9;'>int </span>PACKET_SIZE_LIMIT = <span style='color: #FF813F'>1200</span>; <span style='color:#707070;'>//</span><span style='color:#707070;'> bytes</span><br><br><span style='color:#707070;'>//</span><span style='color:#707070;'> NODES</span><br><br>Steam <span style='color:#77D0F8;'>*</span>steam = nullptr;<br><br><span style='color:#707070;'>//</span><span style='color:#707070;'> PROPERTIES</span><br><br>uint64_t lobby_id = <span style='color: #FF813F'>0</span>;<br>uint64_t steam_id = <span style='color: #FF813F'>0</span>;<br><span style='color:#B692B9;'>bool </span>is_lobby_owner = false;<br><br><span style='color:#707070;'>//</span><span style='color:#707070;'> METHODS</span><br><br><span style='color:#B692B9;'>void </span>_create_lobby<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_join_lobby<span style='color:#56B3D2;'>(</span>uint64_t this_lobby_id<span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_get_lobby_members<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_make_p2p_handshake<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_send_p2p_packet<span style='color:#56B3D2;'>(</span>uint64_t this_target, Dictionary packet_data, P2PSend custom_send_type, <span style='color:#B692B9;'>int </span>custom_channel<span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_read_all_p2p_packets<span style='color:#56B3D2;'>(</span><span style='color:#B692B9;'>int </span>read_count<span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_read_p2p_packet<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_leave_lobby<span style='color:#56B3D2;'>(</span><span style='color:#56B3D2;'>)</span>;<br><br><span style='color:#707070;'>//</span><span style='color:#707070;'> SIGNALS</span><br><br><span style='color:#B692B9;'>void </span>_on_lobby_created<span style='color:#56B3D2;'>(</span><span style='color:#B692B9;'>int </span>connect, uint64_t this_lobby_id<span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_on_lobby_match_list<span style='color:#56B3D2;'>(</span>Array these_lobbies<span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_on_lobby_joined<span style='color:#56B3D2;'>(</span>uint64_t this_lobby_id, <span style='color:#B692B9;'>int </span>_permissions, <span style='color:#B692B9;'>bool </span>_locked, <span style='color:#B692B9;'>int </span>response<span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_on_lobby_chat_update<span style='color:#56B3D2;'>(</span>uint64_t this_lobby_id, uint64_t change_id, uint64_t making_change_id, <span style='color:#B692B9;'>int </span>chat_state<span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_on_p2p_session_request<span style='color:#56B3D2;'>(</span>uint64_t remote_id<span style='color:#56B3D2;'>)</span>;<br><span style='color:#B692B9;'>void </span>_on_p2p_session_connect_fail<span style='color:#56B3D2;'>(</span>uint64_t this_steam_id, <span style='color:#B692B9;'>int </span>session_error<span style='color:#56B3D2;'>)</span>;
+        </code>
+        <p>
+            These will enable you to create, join, and send packets (represented by Godot's 
+            Dictionary types and then converted to bytecode), which can hold pretty much any 
+            information except for pointer types. Pointer types are any type that inherits from 
+            Object, because all Objects in Godot are heap allocated, and sending a pointer over 
+            the internet isn't very useful.
+        </p>
+        <h2 style="margin-bottom: -20px">Remote Messages</h2>
+        <p>
+            All GDScript functions are registered through the 
+            <a href="https://docs.godotengine.org/en/stable/classes/class_classdb.html" target="_blank">ClassDB</a>. This class binds a 
+            <a href="https://stackoverflow.com/questions/35654908/explanation-of-function-pointers" target="_blank">method pointer</a>
+            to a String, enabling the programmer to call any registered function using 
+            just a String. 
+            <br>
+            <br>
+            If we want to call a function remotely on another (or all other) peers, we need to 
+            send a message devoid of pointers, including function pointers. Thus, we can utilize
+            the ClassDB to send a String with the name of the function and values of arguments 
+            over the internet, and then the client can call that function with those arguments 
+            on the other side. In practice:
+        </p>
+        <code>
+            <span style='color:#B692B9;'>void </span>_call_func<span style='color:#56B3D2;'>(</span>Node <span style='color:#77D0F8;'>*</span>node, String function_name, Array args, uint64_t custom_target<span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp NodePath path = editor_node_singleton<span style='color:#77D0F8;'>-</span><span style='color:#77D0F8;'>&gt</span>get_path_to<span style='color:#56B3D2;'>(</span>node<span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp auto send_dictionary = Dictionary<span style='color:#56B3D2;'>(</span>{<br>&nbsp&nbsp &nbsp&nbsp KeyValue<span style='color:#77D0F8;'>&lt</span>Variant, Variant<span style='color:#77D0F8;'>&gt</span><span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>message</span><span style='color:#77D0F8;'>"</span>, <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>call_func</span><span style='color:#77D0F8;'>"</span><span style='color:#56B3D2;'>)</span>,<br>&nbsp&nbsp &nbsp&nbsp KeyValue<span style='color:#77D0F8;'>&lt</span>Variant, Variant<span style='color:#77D0F8;'>&gt</span><span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>path</span><span style='color:#77D0F8;'>"</span>, path<span style='color:#56B3D2;'>)</span>,<br>&nbsp&nbsp &nbsp&nbsp KeyValue<span style='color:#77D0F8;'>&lt</span>Variant, Variant<span style='color:#77D0F8;'>&gt</span><span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>function_name</span><span style='color:#77D0F8;'>"</span>, function_name<span style='color:#56B3D2;'>)</span>,<br>&nbsp&nbsp &nbsp&nbsp KeyValue<span style='color:#77D0F8;'>&lt</span>Variant, Variant<span style='color:#77D0F8;'>&gt</span><span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>args</span><span style='color:#77D0F8;'>"</span>, args<span style='color:#56B3D2;'>)</span>,<br>&nbsp&nbsp }<span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp _send_p2p_packet<span style='color:#56B3D2;'>(</span>custom_target, send_dictionary<span style='color:#56B3D2;'>)</span>;<br>}
+        </code>
+        <p>
+            And on the receiving end, inside the <inline-code>_read_p2p_packet</inline-code> 
+            function:
+        </p>
+        <code>
+            <span style='color:#B692B9;'>if </span><span style='color:#56B3D2;'>(</span>message <span style='color:#B692B9;'>==</span> <span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>call_func</span><span style='color:#77D0F8;'>"</span><span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp NodePath path = readable_data[<span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>path</span><span style='color:#77D0F8;'>"</span>];<br>&nbsp&nbsp String function_name = readable_data[<span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>function_name</span><span style='color:#77D0F8;'>"</span>];<br>&nbsp&nbsp Array args = readable_data[<span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>args</span><span style='color:#77D0F8;'>"</span>];<br>&nbsp&nbsp Node <span style='color:#77D0F8;'>*</span>node = editor_node_singleton<span style='color:#77D0F8;'>-</span><span style='color:#77D0F8;'>&gt</span>get_node_or_null<span style='color:#56B3D2;'>(</span>path<span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp <span style='color:#B692B9;'>if </span><span style='color:#56B3D2;'>(</span>!node<span style='color:#56B3D2;'>)</span> {<br>&nbsp&nbsp &nbsp&nbsp print_error<span style='color:#56B3D2;'>(</span><span style='color:#77D0F8;'>"</span><span style='color:#9EB74C;'>Remote function call on null node at path </span><span style='color:#77D0F8;'>"</span> <span style='color:#77D0F8;'>+</span> String<span style='color:#56B3D2;'>(</span>path<span style='color:#56B3D2;'>)</span><span style='color:#56B3D2;'>)</span>;<br>&nbsp&nbsp }<br>&nbsp&nbsp node<span style='color:#77D0F8;'>-</span><span style='color:#77D0F8;'>&gt</span>callv<span style='color:#56B3D2;'>(</span>function_name, args<span style='color:#56B3D2;'>)</span>;<br>}
+        </code>
+        <p>
+            With just this simple addition we can now send messages back and forth to any peer!
+            <br>
+            <br>
+            In theory you could extend this to implement the concept of "returning" variables from 
+            functions. This would be very easily done in GDScript because the 
+            <inline-code>_call_func</inline-code> function could return a <inline-code>Signal</inline-code>
+            that would be triggered when the value of the function was returned. The user code could 
+            then await for that signal to be called. The concept is slightly harder in C++ because 
+            you would have to implement the whole 
+            <a href="https://en.cppreference.com/w/cpp/thread/async.html" about="_blank">async await</a> 
+            hastle which probably isn't worth it, at least not without an 
+            <a href="https://www.reddit.com/r/cpp_questions/comments/w2yz21/asyncawait_pattern_in_c/" about="_blank">external library</a>.
+        </p>
+        <h2 style="margin-bottom: -20px">Tips</h2>
+        <p style="margin-bottom: 0">
+            Writing multiplayer code can seem hard to wrap your mind around at first, similar in 
+            caliber to 
+            <a href="https://en.wikipedia.org/wiki/Recursion_(computer_science)" target="_blank">recursive functions</a>
+            or <a href="https://en.wikipedia.org/wiki/Multithreading_(computer_architecture)" target="_blank">multithreading</a>. 
+            Really, it's just a matter of abstracting lower level features like packets in ways
+            that are more similar to the conventional style of programming. Remotely calling methods 
+            on peers is similar to calling methods on objects. This abstracts the hastle of "sending messages"
+            into a more familiar style. 
+            <br>
+            <br>
+            Similarities between multiplayer and multithreading can also be drawn, especially in the 
+            context of the <a href="https://en.wikipedia.org/wiki/Race_condition" target="_blank">race condition</a>.
+            When multiple processes are running, and one process writies to a data while another process
+            reads or writes that data, <a href="https://en.wikipedia.org/wiki/Undefined_behavior" target="_blank">
+            undefined behavior</a> occurs. In the context of threading, this problem is mostly solved with 
+            the Mutex, which makes sure a thread waits for the other to finish writing/reading to the data 
+            before doing the same.
+            <br>
+            <br>
+            The key difference between multiplayer and multithreading is that each context has its own 
+            individual variables, and so the risk is more that these variables can become out of sync. 
+            When this happens to key parts of the application (say, a Player's position), you'll have a 
+            problem.
+            <br>
+            <br>
+            One of the solutions to this problem is the concept of "ownership". Each client owns a set 
+            of specific values, and those are the values they can set. All other values can be read of 
+            course, but should not be set by that client. This concept is great for games, but starts to 
+            break down for more complex apps where ownership may not be so clear, such as a document editing 
+            app. To solve problems like this you could:
+        </p>
+        <ul style="margin-bottom: -20px;">
+            <li>Break down ownership into smaller parts.</li>
+            <li>Imagine clients are having a "conversation". For example, client A calls a function on 
+                client B, and client B responds by calling a function on client A. 
+            </li>
+            <li>Cope! Sometimes one client has to overwrite the other, and the other is going to have 
+                to deal with it.
+            </li>
+        </ul>
+        <p>
+            Although some of this might be helpful, chances are you're still going to run into trouble 
+            doing whatever it is you're doing. When you do run into trouble, stay resilient! That is 
+            how you gain valuable experience, in a way that no LLM could gain experience without spending 
+            millions of dollars of water and electricity on a retrain.
+            <br>
+            <br>
+            It would be hard to put into words the knowledge I have gained (and still am gaining, you
+            never stop learning) from my current project, MultiGodot which you can read more about in 
+            <a href="../8-19-25/">this</a> blog post, and maybe in the future a more technical post 
+            about its inner workings. But until then ...
+            <br>
+            <br>
+            Happy <i style="color: rgb(182, 182, 182)">Tuesday, August 22nd, 2025, 18:47 PDT!</i>
+        </p>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <div class="fancy">
+            <img class="tubetop" src="../../assets/tubetop.png">
+            <img class="tubebottom" src="../../assets/tubeback.png">
+            <img class="tubetopright" src="../../assets/tubetop.png">
+            <img class="tubebottomright" src="../../assets/tubeback.png">
+            <div class="marquee-container">
+                <marquee class="marquee">
+                    <img class="rotating" src="../../assets/profile.png" style="width: 20%; height: 20%">
+                </marquee>
+            </div>
+            <div class="marquee-container2">
+                <marquee id="profile" class="secondmarquee" scrollamount="3">
+                    <img class="rotating2" src="../../assets/profile.png" style="width: 20%; height: 20%">
+                </marquee>
+            </div>
+            <marquee id="profile" class="secondmarquee" scrollamount="3" style="top: -320px; z-index: 100;">
+                <a href="https://elouan.xyz" style="z-index: 100" title="Elouan's website">
+                    <div style="width: 150px; height: 150px;"></div>
+                </a>
+            </marquee>
+            <marquee id="profile" class="secondmarquee" scrollamount="6" style="top: -475px; z-index: 100;">
+                <a href="https://elouan.xyz" style="z-index: 100" title="Elouan's website">
+                    <div style="width: 150px; height: 150px;"></div>
+                </a>
+            </marquee>
+        </div>
+        <br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br>
+        <div style="margin-top: 0" class="bottom-bar">
+            <p style="margin: 2%">&copy 2025 Carson Bates. Some people are surprised that the above animation doesn't use JS, others aren't.</p>
+        </div>
+    </div>
+</body>
+</html>

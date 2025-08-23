@@ -1,57 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-
-using namespace glm;
-
-int main() {
-    // Create OpenGL context.
-    if (!glfwInit()) {
-        printf("ERROR: Failed to initialize GLFW window.\n");
-        return -1;
+if (message == "call_func") {
+    NodePath path = readable_data["path"];
+    String function_name = readable_data["function_name"];
+    Array args = readable_data["args"];
+    Node *node = editor_node_singleton->get_node_or_null(path);
+    if (!node) {
+        print_error("Remote function call on null node at path " + String(path));
     }
-    
-    glfwWindowHint(GLFW_SAMPLES, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // Make our window!
-    GLFWwindow* window = glfwCreateWindow(1000, 800, "OpenGL Window!", NULL, NULL);
-    if (window == NULL) {
-        printf("ERROR: Failed to oepn GLFW window.\n");
-        glfwTerminate();
-        return -1;
-    }
-
-    // Makes this the window everything gets drawn to for the current thread.
-    glfwMakeContextCurrent(window);
-
-    // Initialize GLEW
-    glewExperimental = true;
-    if (glewInit() != GLEW_OK) {
-        printf("ERROR: Failed to init GLEW.\n");
-        glfwTerminate();
-        return -1;
-    }
-
-    // Don't worry about this for now.
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    do {
-        glfwSwapBuffers(window);
-
-        // Gets all the keys pressed (including the X button in the top right!)
-        glfwPollEvents();
-    }
-    while (!glfwWindowShouldClose(window));
-
-    glfwTerminate();
-
-    return 0;
+    node->callv(function_name, args);
 }
