@@ -5,6 +5,13 @@
         <link>http://carsonetb.com/</link>
         <description>Blog posts about things that I make and my process. Expect programming, OpenGL, Godot, Python, and maybe other stuff.</description>
         <item>
+            <title>Taking a Break From MultiGodot</title>
+            <description>A short blog. Updates on my ongoing projects. A new thing.</description>
+            <link>https://carsonetb.com/blog/9-19-25</link>
+            <guid>http://carsonetb.com/blog/9-19-25</guid>
+            <pubDate>Fri, 19 Sep 2025 22:54 PDT</pubDate>
+        </item>
+        <item>
             <title>Advice for Writing Multiplayer Code</title>
             <description>Some advice for anyone looking to write multiplayer code, and also a small tutorial for GodotSteam.</description>
             <link>https://carsonetb.com/blog/8-22-25</link>
